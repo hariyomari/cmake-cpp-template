@@ -1,0 +1,9 @@
+# Build files
+build
+
+# CMake/Bear
+compile_commands.json
+compile_commands.events.json
+
+# Clangd cache
+.cache

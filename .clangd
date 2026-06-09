@@ -1,0 +1,5 @@
+CompileFlags:
+  Add: [-Wall -Wextra -Wpedantic -xc -I./src -isystem./deps -save-temps]
+
+Diagnostics:
+  Suppress: []

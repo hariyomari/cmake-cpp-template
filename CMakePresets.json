@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "windows",
+      "displayName": "Windows",
+      "description": "Target Windows using the Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/windows"
+    },
+    {
+      "name": "gnu-linux",
+      "displayName": "GNU Linux",
+      "description": "Target Linux using default Makefiles",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows",
+      "configurePreset": "windows"
+    },
+    {
+      "name": "gnu-linux",
+      "configurePreset": "gnu-linux"
+    }
+  ]
+}
