@@ -68,11 +68,11 @@ target_include_directories(common PUBLIC
 target_link_libraries(common PUBLIC)
 
 #
-# Binary
+# Output binary
 #
 
-add_executable(main "src/main.c")
-target_include_directories(main PRIVATE 
+add_executable(${PROJECT_NAME} "src/main.c")
+target_include_directories(${PROJECT_NAME} PRIVATE 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
-target_link_libraries(main PRIVATE 
+target_link_libraries(${PROJECT_NAME} PRIVATE 
     common)
