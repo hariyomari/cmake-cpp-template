@@ -5,8 +5,6 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(cmake-c-cpp-project-template VERSION 0.0.1 LANGUAGES C CXX)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 # C++17, C++20, C++23
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,6 +16,8 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 # Build environment and compiler-specific flags
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(MSVC)
     add_compile_options(/W4)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
