@@ -11,14 +11,14 @@
 void exit_success(void) { exit(EXIT_SUCCESS); }
 void exit_failure(void) { exit(EXIT_FAILURE); }
 
-int errno_str(char *out_buf, size_t buf_size)
+int errno_str(char* out_buf, size_t buf_size)
 {
     if (out_buf == NULL || buf_size == 0)
     {
         return -1;
     }
 
-    char *err = strerror(errno);
+    char* err = strerror(errno);
     if (err == NULL)
     {
         return -1;
@@ -28,7 +28,7 @@ int errno_str(char *out_buf, size_t buf_size)
     return 0;
 }
 
-void fatal(const char *m)
+void fatal(const char* m)
 {
     if (m != NULL)
     {
@@ -48,7 +48,7 @@ void fatal(const char *m)
     exit_failure();
 }
 
-void fatal_fmt(const char *fmt, ...)
+void fatal_fmt(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);

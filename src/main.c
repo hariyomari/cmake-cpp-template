@@ -15,7 +15,7 @@ void handle_sigint(int sig)
     exit_success();
 }
 
-int main(int argc, const char **argv)
+int main(int argc, const char** argv)
 {
     UNUSED(argc + argv);
 
