@@ -5,8 +5,8 @@
 cmake_minimum_required(VERSION 3.25.0)
 project(cmake-c-cpp-project-template VERSION 0.0.1 LANGUAGES C CXX)
 
-# C++17, C++20, C++23
-set(CMAKE_CXX_STANDARD 23)
+# C++17, C++20, C++23, C++26
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
