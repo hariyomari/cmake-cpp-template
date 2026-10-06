@@ -1,17 +1,24 @@
-# IDE
-.idea/
-.vs/
-out/
-
-# Build files
+# Build folders
+/build/
+/out/
 cmake-build-*/
-build
 
 # CMake
 CMakeUserPresets.json
-compile_commands.json
-compile_commands.events.json
+/compile_commands.json
 
-# Miscellaneous
-.cache/
+# Tools
+/.cache/
+
+# IDEs
+.idea/
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# OS files
 .DS_Store
+._*
+Thumbs.db
+desktop.ini
