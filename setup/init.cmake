@@ -21,7 +21,7 @@ if(DEFINED NAME)
 
     file(READ "${root}/CMakeLists.txt" contents)
 
-    # Find the project line, e.g. project(cmake-c-cpp-project-template VERSION 2.0.0 LANGUAGES C CXX)
+    # Find the project line, e.g. project(cmake-cpp-template VERSION 2.0.0 LANGUAGES C CXX)
     string(REGEX MATCH "project\\([^)]*\\)" old_line "${contents}")
     if(NOT old_line)
         message(FATAL_ERROR "Couldn't find the project(...) line in CMakeLists.txt")
