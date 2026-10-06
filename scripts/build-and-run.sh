@@ -1,42 +1,20 @@
 #!/bin/sh
+# Builds the project, then runs it.
+# Usage: scripts/build-and-run.sh [preset]
+#   preset: a configure preset from CMakePresets.json (default: debug)
+set -eu
 
-exit_with_code() {
-    exit_code=$1
+preset="${1:-debug}"
+script_dir="$(dirname -- "$0")"
 
-    if [ "${exit_code}" -ne 0 ]; then
-        echo "Application exited with an error: ${exit_code}"
-        read -r _
-    else
-        echo "Application exited successfully: ${exit_code}"
-    fi
+sh "$script_dir/build.sh" "$preset"
 
-    exit "$exit_code"
-}
+cd "$script_dir/.."
 
-cd "${0%/*}" || exit_with_code 1
-
-project_name=$(grep -i "project(" ../CMakeLists.txt | head -n 1 | sed 's/.*project(\([A-Za-z0-9_-]*\).*/\1/i')
-echo "Building project: ${project_name}";
-
-build_script=./build.sh
-if [ ! -f ${build_script} ]; then
-    echo "Failed to find the build script; exiting."
-    exit_with_code 1
+# "run" is a custom target in CMakeLists.txt that runs the program from the build folder
+if cmake --build --preset "$preset" --target run; then
+    printf '\nApplication exited successfully.\n'
+else
+    printf '\nApplication exited with an error.\n'
+    exit 1
 fi
-
-if ! eval ${build_script}; then
-    exit_with_code 1;
-fi
-
-# Move to the build directory so our output binary can detect files relative to its current path 
-cd ../build || exit
-
-output_binary=./linux/${project_name}
-if [ ! -f "${output_binary}" ]; then
-    echo "Failed to find the output binary; exiting."
-    exit_with_code 1
-fi
-
-eval "${output_binary}"
-printf "\n"
-exit_with_code $?

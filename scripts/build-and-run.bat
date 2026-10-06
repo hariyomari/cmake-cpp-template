@@ -1,46 +1,29 @@
 @echo off
-setlocal enabledelayedexpansion
+:: Builds the project, then runs it.
+:: Usage: scripts\build-and-run.bat [preset]
+::   preset: a configure preset from CMakePresets.json (default: debug)
+setlocal
 
-for /f "tokens=2 delims=()" %%a in ('findstr /i "project(" ..\CMakeLists.txt') do (
-    for %%b in (%%a) do (
-        set "PROJECT_NAME=%%b"
-        goto :found_name
-    )
-)
-:found_name
-echo Building project: %PROJECT_NAME%
+set "PRESET=%~1"
+if "%PRESET%"=="" set "PRESET=debug"
 
-cd /d "%~dp0"
+call "%~dp0common.bat" || goto :build_failed
+cd /d "%~dp0.." || goto :build_failed
 
-set "BUILD_SCRIPT=build.bat"
-if not exist "%BUILD_SCRIPT%" (
-    echo Failed to find the build script; exiting.
-    call :exit_with_code 1
-)
-call "%BUILD_SCRIPT%"
-if %errorlevel% neq 0 call :exit_with_code %errorlevel%
+cmake --preset "%PRESET%" || goto :build_failed
+cmake --build --preset "%PRESET%" || goto :build_failed
 
-:: Move to the build directory so our output binary can detect files relative to its current path 
-cd ..\build || call :exit_with_code 1
-
-set "OUTPUT_BINARY=windows\%PROJECT_NAME%.exe"
-if not exist "%OUTPUT_BINARY%" (
-    echo Failed to find the output binary; exiting.
-    call :exit_with_code 1
-)
-
-"%OUTPUT_BINARY%"
+:: "run" is a custom target in CMakeLists.txt that runs the program from the build folder
+cmake --build --preset "%PRESET%" --target run
+set "EXIT_CODE=%ERRORLEVEL%"
 echo.
-call :exit_with_code %errorlevel%
+if %EXIT_CODE% neq 0 (echo Application exited with an error.) else (echo Application exited successfully.)
+goto :done
 
-:exit_with_code
-set "EXIT_CODE=%~1"
-if %EXIT_CODE% neq 0 (
-    echo Application exited with an error: %EXIT_CODE%
-    pause
-) else (
-    echo Application exited successfully: %EXIT_CODE%
-    pause
-)
+:build_failed
+set "EXIT_CODE=%ERRORLEVEL%"
+echo Build failed with exit code %EXIT_CODE%.
 
+:done
+if defined DOUBLE_CLICKED pause
 exit /b %EXIT_CODE%

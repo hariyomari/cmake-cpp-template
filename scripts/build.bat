@@ -1,15 +1,20 @@
 @echo off
+:: Configures and builds the project.
+:: Usage: scripts\build.bat [preset]
+::   preset: a configure preset from CMakePresets.json (default: debug)
+setlocal
 
-cd /d "%~dp0"
-cd ..
+set "PRESET=%~1"
+if "%PRESET%"=="" set "PRESET=debug"
 
-:: Forces Ninja to re-evaulate the project (thinking all of the files have been changed) and generate a fresh compile_commands.json
-if exist apps (
-    for /r "src" %%i in (*.c) do copy /b "%%i"+,, "%%i" >nul 2>&1
-)
-if exist lib (
-    for /r "lib" %%i in (*.c) do copy /b "%%i"+,, "%%i" >nul 2>&1
-)
+call "%~dp0common.bat" || goto :done
+cd /d "%~dp0.." || goto :done
 
-cmake --preset "windows"
-cmake --build --preset "windows"
+cmake --preset "%PRESET%" || goto :done
+cmake --build --preset "%PRESET%" || goto :done
+
+:done
+set "EXIT_CODE=%ERRORLEVEL%"
+if %EXIT_CODE% neq 0 echo Build failed with exit code %EXIT_CODE%.
+if defined DOUBLE_CLICKED pause
+exit /b %EXIT_CODE%
