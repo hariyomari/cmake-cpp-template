@@ -2,7 +2,16 @@
 # CMake configuration
 #
 
+
+# Minimum required CMake version
 cmake_minimum_required(VERSION 3.25.0)
+
+# Prevent building inside of the source directory
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "Build in a separate directory, e.g.: cmake --preset debug")
+endif()
+
+# Project configuration
 project(cmake-cpp-template VERSION 2.0.0 LANGUAGES C CXX)
 
 # C++17, C++20, C++23, C++26
