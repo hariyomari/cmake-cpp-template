@@ -16,6 +16,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 # Build environment and compiler-specific flags
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Warning settings applied only to our own targets
@@ -36,6 +37,12 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
         VERBATIM
     )
 endif()
+
+# Build targets
+add_custom_target(run
+    COMMAND ${PROJECT_NAME}
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    USES_TERMINAL)
 
 #
 # Dependencies
