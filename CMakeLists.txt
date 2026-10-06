@@ -38,19 +38,15 @@ add_custom_target(run
 # Dependencies
 #
 
-# Setting up dependencies goes here
-# If you add a submodule via add_subdirectory(deps/foo), you can silence
-# its warnings entirely by adding SYSTEM to its include directory mappings, like:
-# target_include_directories(foo SYSTEM PUBLIC deps/foo/include)
+# Setting up dependencies goes here - for each submodule:
+#
+# if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/foo/CMakeLists.txt")
+#     message(FATAL_ERROR "deps/foo is empty. Run: git submodule update --init --recursive")
+# endif()
+# add_subdirectory(deps/foo EXCLUDE_FROM_ALL SYSTEM)
+# target_link_libraries(${PROJECT_NAME} PRIVATE foo)
+#
 
-#[===[
-# Silence all dependency warnings
-if(MSVC)
-    target_compile_options(dep-name PRIVATE /w)
-else()
-    target_compile_options(dep-name PRIVATE -w)
-endif()
-#]===]
 
 #
 # Project libraries
