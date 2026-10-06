@@ -43,9 +43,19 @@ add_custom_target(run
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
     USES_TERMINAL)
 
+# Copy `compile_commands.json` to the root directory, so clangd can see it
+if(PROJECT_IS_TOP_LEVEL AND CMAKE_GENERATOR MATCHES "Ninja|Makefiles")
+    add_custom_target(copy_compile_commands ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/compile_commands.json"
+            "${CMAKE_SOURCE_DIR}/compile_commands.json")
+endif()
+
+
 #
 # Dependencies
 #
+
 
 # Setting up dependencies goes here - for each submodule:
 #
