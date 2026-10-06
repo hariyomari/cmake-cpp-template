@@ -18,11 +18,13 @@ set(CMAKE_C_EXTENSIONS OFF)
 # Build environment and compiler-specific flags
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Warning settings applied only to our own targets
+add_library(project_config INTERFACE)
 if(MSVC)
-    add_compile_options(/W4)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    target_compile_options(project_config INTERFACE /W4 /permissive- /utf-8)
+    target_compile_definitions(project_config INTERFACE _CRT_SECURE_NO_WARNINGS)
 else()
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    target_compile_options(project_config INTERFACE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
 endif()
 
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
@@ -64,11 +66,20 @@ set(COMMON_SRCS
 add_library(common STATIC ${COMMON_SRCS})
 target_include_directories(common PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_link_libraries(common PRIVATE project_config)
 
 # Main
 add_executable(${PROJECT_NAME} "src/main.cpp")
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE project_config
     common)
 
+
+#
+# Project configuration
+#
+
+option(WARNINGS_AS_ERRORS "Fail the build on warnings in our code" OFF)
+set_target_properties(${PROJECT_NAME} common PROPERTIES
+    COMPILE_WARNING_AS_ERROR ${WARNINGS_AS_ERRORS})
