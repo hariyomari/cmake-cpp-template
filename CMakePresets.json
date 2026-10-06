@@ -1,29 +1,26 @@
 {
-  "version": 3,
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
   "configurePresets": [
     {
-      "name": "windows",
-      "displayName": "Windows",
-      "description": "Target Windows using the Ninja generator",
+      "name": "base",
+      "hidden": true,
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/windows"
+      "binaryDir": "${sourceDir}/build/${presetName}"
     },
     {
-      "name": "gnu-linux",
-      "displayName": "GNU Linux",
-      "description": "Target Linux using default Makefiles",
-      "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/linux"
+      "name": "debug",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     }
   ],
   "buildPresets": [
-    {
-      "name": "windows",
-      "configurePreset": "windows"
-    },
-    {
-      "name": "gnu-linux",
-      "configurePreset": "gnu-linux"
-    }
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" }
   ]
 }
