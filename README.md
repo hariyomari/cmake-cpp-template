@@ -77,3 +77,5 @@ Anyone cloning a project that has submodules needs `git clone --recursive`, or `
 ## License
 
 This template is licensed under [0BSD](LICENSE): use it for anything, without keeping the notice or crediting it. The setup script replaces it with your own project's license.
+
+The exception is `.gitattributes`, which comes from [gitattributes/gitattributes](https://github.com/gitattributes/gitattributes) and is MIT licensed.
