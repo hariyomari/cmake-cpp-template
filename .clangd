@@ -1,5 +1,11 @@
 CompileFlags:
-  Add: [-Wall -Wextra -Wpedantic -xc -I./src -isystem./deps -save-temps]
+  CompilationDatabase: build/debug
 
 Diagnostics:
-  Suppress: []
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+
+InlayHints:
+  Enabled: true
+  DeducedTypes: true
+  ParameterNames: true
