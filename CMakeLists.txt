@@ -71,27 +71,5 @@ endif()
 # Project libraries
 #
 
-# Common
-set(COMMON_SRCS
-    "src/common/clock.cpp"
-    "src/common/error.cpp")
-add_library(common STATIC ${COMMON_SRCS})
-target_include_directories(common PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_link_libraries(common PRIVATE project_config)
 
-# Main
-add_executable(${PROJECT_NAME} "src/main.cpp")
-target_include_directories(${PROJECT_NAME} PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_link_libraries(${PROJECT_NAME} PRIVATE project_config
-    common)
-
-
-#
-# Project configuration
-#
-
-option(WARNINGS_AS_ERRORS "Fail the build on warnings in our code" OFF)
-set_target_properties(${PROJECT_NAME} common PROPERTIES
-    COMPILE_WARNING_AS_ERROR ${WARNINGS_AS_ERRORS})
+add_subdirectory(app)

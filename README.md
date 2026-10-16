@@ -48,9 +48,9 @@ cmake --build --preset debug
 ## Project layout
 
 ```
-src/          source code
+app/          source code
   main.cpp
-  common/     example library, showing how to add and link a library of your own
+  common/
 deps/         dependencies, added as git submodules
 scripts/      build scripts
 setup/        one-time project setup, deleted after use
