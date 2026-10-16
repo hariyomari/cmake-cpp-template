@@ -36,22 +36,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # AddressSanitizer for Debug builds
 option(ENABLE_ASAN "Build Debug with AddressSanitizer" ON)
-if (ENABLE_ASAN AND MSVC)
-    # /RTC1 is in CMake's default MSVC Debug flags and is incompatible with ASan
-    string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
-    string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
-    endif ()
-
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_compile_options(/fsanitize=address)
-    endif()
-endif ()
 
 
-# Project configuration options
+# Fail build compilation if our code contains warnings
 option(WARNINGS_AS_ERRORS "Fail the build on warnings in our code" OFF)
 
 
@@ -72,6 +59,31 @@ else ()
 endif ()
 
 
+# The sanitizer flags are attached to cmake_config, so only targets that link it
+# are sanitized, and dependencies added in the Dependencies section are not
+if (ENABLE_ASAN)
+    if (MSVC)
+        # /RTC1 is in CMake's default MSVC Debug flags and is incompatible with ASan
+        string(REPLACE "/RTC1" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
+        string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+        if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+        endif ()
+
+        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+            target_compile_options(cmake_config INTERFACE /fsanitize=address)
+        endif ()
+    else ()
+        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+            target_compile_options(cmake_config INTERFACE
+                    -fsanitize=address -fno-omit-frame-pointer)
+            target_link_options(cmake_config INTERFACE -fsanitize=address)
+        endif ()
+    endif ()
+endif ()
+
+
 # Build targets
 add_custom_target(run
     COMMAND ${PROJECT_NAME}
@@ -79,7 +91,8 @@ add_custom_target(run
     USES_TERMINAL)
 
 
-# Copy `compile_commands.json` to the root directory, so clangd can see it
+# Copy `compile_commands.json` to the root directory, so tools that look for it
+# there (like VS Code's C/C++ extension) can find it
 if(PROJECT_IS_TOP_LEVEL AND CMAKE_GENERATOR MATCHES "Ninja|Makefiles")
     add_custom_target(copy_compile_commands ALL
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
