@@ -1,5 +1,8 @@
 CompileFlags:
   CompilationDatabase: build/debug
+  Remove:
+    - -fsanitize=address
+    - /fsanitize=address
 
 Diagnostics:
   UnusedIncludes: Strict
