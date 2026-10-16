@@ -7,6 +7,7 @@ A modern, lightweight boilerplate for starting new C++ projects with CMake. It s
 - [CMake](https://cmake.org/download/) 3.25 or newer
 - [Ninja](https://ninja-build.org/) (Windows: `winget install Ninja-build.Ninja`)
 - A C++20 compiler: Visual Studio 2022 or its Build Tools on Windows, GCC 13+ or Clang 17+ on Linux
+- [LLVM](https://releases.llvm.org/) for editor support (optional): clangd, clang-format 16+, clang-tidy 17+
 - [Git](https://git-scm.com/downloads)
 
 ## Getting started
@@ -56,7 +57,7 @@ scripts/      build scripts
 setup/        one-time project setup, deleted after use
 ```
 
-`common/` is only sample code, and `main.cpp` doesn't use it. To remove it, delete the folder and every line that mentions `common` in `CMakeLists.txt`.
+`common/` is only sample code, and `main.cpp` doesn't use it. To remove it, delete the folder and every line that mentions `common` in `[app/CMakeLists.txt](app/CMakeLists.txt)`.
 
 ## Adding a dependency
 
