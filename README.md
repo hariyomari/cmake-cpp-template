@@ -57,7 +57,7 @@ scripts/      build scripts
 setup/        one-time project setup, deleted after use
 ```
 
-`common/` is only sample code, and `main.cpp` doesn't use it. To remove it, delete the folder and every line that mentions `common` in `[app/CMakeLists.txt](app/CMakeLists.txt)`.
+`common/` is only sample code, and `main.cpp` doesn't use it. To remove it, delete the folder and every line that mentions `common` in [app/CMakeLists.txt](app/CMakeLists.txt).
 
 ## Adding a dependency
 
