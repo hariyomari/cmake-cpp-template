@@ -1,8 +1,8 @@
+#include "common/error.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
-
-#include "common/error.hpp"
 
 namespace common
 {

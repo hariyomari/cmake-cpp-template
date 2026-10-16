@@ -1,7 +1,7 @@
+#include "common/clock.hpp"
+
 #include <chrono>
 #include <cstdint>
-
-#include "common/clock.hpp"
 
 namespace common
 {
