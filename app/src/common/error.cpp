@@ -1,7 +1,7 @@
 #include "common/error.hpp"
 
+#include <cstdio>
 #include <cstdlib>
-#include <iostream>
 #include <string>
 
 namespace common
@@ -9,7 +9,7 @@ namespace common
 
 void fatal_impl(const std::string& message)
 {
-    std::cerr << message << '\n';
+    std::fprintf(stderr, "%s\n", message.c_str());
     std::exit(EXIT_FAILURE);
 }
 
