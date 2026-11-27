@@ -15,7 +15,7 @@ A modern, lightweight boilerplate for starting new C++ projects with CMake. It s
 Clone the template into a folder named after your project, then run the setup script:
 
 ```sh
-git clone https://codeberg.org/hariyomari/cmake-cpp-template.git my-project
+git clone https://github.com/hariyomari/cmake-cpp-template.git my-project
 cd my-project
 setup/init.sh                 # Windows: setup\init.bat
 ```
